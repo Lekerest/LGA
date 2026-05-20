@@ -6,4 +6,4 @@ if [ ! -x ./lga ]; then
     ./build_mac.sh
 fi
 
-./lga -w 60 -h 40 -n 500 -d 10 --rho-in 1.6 -v 10
+./lga -w 60 -h 40 -n 5000 -d 10 --rho-in 1.6 -v 10
