@@ -30,8 +30,8 @@ run-small: $(TARGET)
 run-big: $(TARGET)
 	./$(TARGET) -w 256 -h 160 -n 1000 -d 30 --rho-in 1.8 -v 100
 
-resume-small: $(TARGET)
-	./$(TARGET) -w 60 -h 40 -n 200 -d 10 --rho-in 1.6 -v 10 --resume
+resume: $(TARGET)
+	./$(TARGET) -w 60 -h 40 -n 200000 -d 10 --rho-in 1.6 -v 10 --resume
 
 clean:
 	rm -f *.o $(TARGET) $(TEST_TARGET) grid.bin test_grid.bin
