@@ -12,7 +12,8 @@
 #include "grid_io.h"
 #include "render.h"
 
-static void print_help(const char *prog) {
+static void print_help(const char *prog) 
+{
     printf("Usage:\n");
     printf("  %s [options]\n\n", prog);
     printf("Options:\n");
@@ -30,9 +31,10 @@ static void print_help(const char *prog) {
     printf("  --help             show help\n");
 }
 
-static int need_value(int i, int argc, const char *opt) {
-    if (i + 1 >= argc) {
-        fprintf(stderr, "Option %s requires value\n", opt);
+static int need_value(int i, int argc, const char *opt) 
+{
+    if (i + 1 >= argc) 
+    {
         exit(1);
     }
     return i + 1;
