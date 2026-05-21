@@ -21,17 +21,17 @@ typedef struct {
 } Cell;
 
 typedef struct {
-    int width;
-    int height;
-    uint64_t iters;
-    int viz_interval;
-    int diameter;
-    unsigned int seed;
-    double rho_in;
-    double rho_init;
-    bool resume;
-    const char *bin_path;
-    const char *frames_dir;
+    int width;              // Ширина решётки в клетках
+    int height;             // Высота решётки в клетках
+    uint64_t iters;         // Количество итераций симуляции
+    int viz_interval;       // Интервал визуализации: каждые viz_interval итераций сохраняется PPM и выводится ANSI-картинка для маленькой решётки
+    int diameter;           // Диаметр цилиндра-препятствия в клетках
+    unsigned int seed;      // Seed для генератора случайных чисел
+    double rho_in;          // Плотность входного потока слева
+    double rho_init;        // Начальная плотность случайного заполнения решётки
+    bool resume;            // Флаг продолжения симуляции: false — начать новую симуляцию true  — загрузить состояние из grid.bin
+    const char *bin_path;   // Путь к бинарному файлу состояния, обычно "grid.bin"
+    const char *frames_dir; // Папка для сохранения PPM-кадров, обычно "frames"
 } SimParams;
 
 #endif
