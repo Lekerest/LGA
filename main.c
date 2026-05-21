@@ -12,8 +12,7 @@
 #include "grid_io.h"
 #include "render.h"
 
-static void print_help(const char *prog) 
-{
+static void print_help(const char *prog) {
     printf("Usage:\n");
     printf("  %s [options]\n\n", prog);
     printf("Options:\n");
@@ -40,10 +39,12 @@ static int need_value(int i, int argc, const char *opt)
     return i + 1;
 }
 
-static int parse_int(const char *s, const char *name) {
+static int parse_int(const char *s, const char *name) 
+{
     char *end = NULL;
     long v = strtol(s, &end, 10);
-    if (!end || *end != '\0') {
+    if (!end || *end != '\0') 
+    {
         fprintf(stderr, "Bad integer for %s: %s\n", name, s);
         exit(1);
     }
