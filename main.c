@@ -30,19 +30,22 @@ static void print_help(const char *prog) {
     printf("  --help             show help\n");
 }
 
-static int need_value(int i, int argc, const char *opt) {
-    if (i + 1 >= argc) {
+static int need_value(int i, int argc, const char *opt) 
+{
+    if (i + 1 >= argc) 
+    {
         fprintf(stderr, "Option %s requires value\n", opt);
         exit(1);
     }
     return i + 1;
 }
 
-static int parse_int(const char *s, const char *name) {
+static int parse_int(const char *s, const char *name) 
+{
     char *end = NULL;
     long v = strtol(s, &end, 10);
-    if (!end || *end != '\0') {
-        fprintf(stderr, "Bad integer for %s: %s\n", name, s);
+    if (!end || *end != '\0') 
+    {
         exit(1);
     }
     return (int)v;
