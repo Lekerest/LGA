@@ -27,11 +27,11 @@ static void make_dir(const char *dir) {
     mkdir(dir, 0755);
 #endif
 }
-
+//считаем плотность одной клетки
 double cell_density(const Cell *c) {
     return (double)popcount7(c->state);
 }
-
+//средняя плотность сетки
 double compute_avg_density(const Cell *grid, int w, int h) {
     double sum = 0.0;
     int count = 0;
@@ -45,9 +45,9 @@ double compute_avg_density(const Cell *grid, int w, int h) {
 
     return count > 0 ? sum / (double)count : 0.0;
 }
-
-void density_to_rgb(double rho, uint8_t *r, uint8_t *g, uint8_t *b) {
-    double t = rho / 7.0;
+//плотность в цвет две интерполяции син зел и зел красный
+void density_to_rgb(double plot, uint8_t *r, uint8_t *g, uint8_t *b) {
+    double t = plot / 7.0;
     if (t < 0.0) t = 0.0;
     if (t > 1.0) t = 1.0;
 
@@ -63,13 +63,12 @@ void density_to_rgb(double rho, uint8_t *r, uint8_t *g, uint8_t *b) {
         *b = (uint8_t)(50.0 - s * 20.0);
     }
 }
-
+//сохраниеие кадра
 void save_ppm(const Cell *grid, int w, int h, uint64_t iter, const char *dir) {
     make_dir(dir);
 
     char path[256];
-    snprintf(path, sizeof(path), "%s/frame_%06llu.ppm",
-             dir, (unsigned long long)iter);
+    snprintf(path, sizeof(path), "%s/frame_%06llu.ppm", dir, (unsigned long long)iter);
 
     FILE *f = fopen(path, "wb");
     if (!f) {
@@ -100,13 +99,12 @@ void save_ppm(const Cell *grid, int w, int h, uint64_t iter, const char *dir) {
 
     fclose(f);
 }
-
-void render_ansi(const Cell *grid, int w, int h, uint64_t iter, double rho_avg) {
+//красим терминал в нужные цвет
+void render_ansi(const Cell *grid, int w, int h, uint64_t iter, double plot_avg) {
     if (w > 80) return;
 
     printf("\033[2J\033[H");
-    printf("iter: %llu | rho avg: %.4f | size: %dx%d\n",
-           (unsigned long long)iter, rho_avg, w, h);
+    printf("iter: %llu | plot avg: %.4f | size: %dx%d\n", (unsigned long long)iter, plot_avg, w, h);
 
     printf("+");
     for (int x = 0; x < w; x++) printf("--");
@@ -135,12 +133,12 @@ void render_ansi(const Cell *grid, int w, int h, uint64_t iter, double rho_avg) 
     for (int x = 0; x < w; x++) printf("--");
     printf("+\n");
 }
-
+//сохраняем кадлые н инетераций кадр и выводим анси
 void render_frame(const Cell *grid, int w, int h, uint64_t iter, const char *dir) {
-    double rho_avg = compute_avg_density(grid, w, h);
+    double plot_avg = compute_avg_density(grid, w, h);
     save_ppm(grid, w, h, iter, dir);
 
     if (w <= 80) {
-        render_ansi(grid, w, h, iter, rho_avg);
+        render_ansi(grid, w, h, iter, plot_avg);
     }
 }

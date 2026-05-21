@@ -11,13 +11,13 @@ typedef struct {
     uint32_t width;
     uint32_t height;
     uint64_t iteration;
-    double rho_in;
+    double plot_in;
 } GridHeader;
 
 void grid_save(const Cell *grid, uint32_t w, uint32_t h,
-               uint64_t iter, double rho_in, const char *path);
+               uint64_t iter, double plot_in, const char *path);
 
 int grid_load(Cell *grid, uint32_t w, uint32_t h,
-              uint64_t *iter, double *rho_in, const char *path);
+              uint64_t *iter, double *plot_in, const char *path);
 
 #endif

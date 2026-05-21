@@ -56,12 +56,12 @@ static void test_grid_io(void) {
     grid_save(grid, (uint32_t)w, (uint32_t)h, 123, 1.75, "test_grid.bin");
 
     uint64_t iter = 0;
-    double rho = 0.0;
-    int ok = grid_load(loaded, (uint32_t)w, (uint32_t)h, &iter, &rho, "test_grid.bin");
+    double plot = 0.0;
+    int ok = grid_load(loaded, (uint32_t)w, (uint32_t)h, &iter, &plot, "test_grid.bin");
 
     check_true("grid_load ok", ok == 1);
     check_true("grid_load iter", iter == 123);
-    check_true("grid_load rho", fabs(rho - 1.75) < 1e-9);
+    check_true("grid_load plot", fabs(plot - 1.75) < 1e-9);
     check_int("grid_load state", loaded[12].state, 31);
 
     free(grid);
@@ -89,8 +89,8 @@ static void test_avg_density(void) {
     Cell *grid = grid_alloc(w, h);
     grid[0].state = 3;
     grid[1].state = 1;
-    double rho = compute_avg_density(grid, w, h);
-    check_true("avg density", fabs(rho - 3.0 / 16.0) < 1e-9);
+    double plot = compute_avg_density(grid, w, h);
+    check_true("avg density", fabs(plot - 3.0 / 16.0) < 1e-9);
     free(grid);
 }
 

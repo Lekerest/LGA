@@ -22,29 +22,26 @@ static void print_help(const char *prog) {
     printf("  -d <int>           cylinder diameter, default 30\n");
     printf("  -v <int>           visualization interval, default 100\n");
     printf("  -s <int>           random seed\n");
-    printf("  --rho-in <double>  inlet density, default 1.6\n");
-    printf("  --rho-init <dbl>   initial density, default 1.0\n");
+    printf("  --plot-in <double>  inlet density, default 1.6\n");
+    printf("  --plot-init <dbl>   initial density, default 1.0\n");
     printf("  --resume           load grid.bin and continue\n");
     printf("  --bin <path>       binary state path, default grid.bin\n");
     printf("  --frames <dir>     PPM output directory, default frames\n");
     printf("  --help             show help\n");
 }
 
-static int need_value(int i, int argc, const char *opt) 
-{
-    if (i + 1 >= argc) 
-    {
+static int need_value(int i, int argc, const char *opt) {
+    if (i + 1 >= argc) {
+        fprintf(stderr, "Option %s requires value\n", opt);
         exit(1);
     }
     return i + 1;
 }
 
-static int parse_int(const char *s, const char *name) 
-{
+static int parse_int(const char *s, const char *name) {
     char *end = NULL;
     long v = strtol(s, &end, 10);
-    if (!end || *end != '\0') 
-    {
+    if (!end || *end != '\0') {
         fprintf(stderr, "Bad integer for %s: %s\n", name, s);
         exit(1);
     }
@@ -68,8 +65,8 @@ static void params_default(SimParams *p) {
     p->viz_interval = 100;
     p->diameter = 30;
     p->seed = (unsigned int)time(NULL);
-    p->rho_in = 1.6;
-    p->rho_init = 1.0;
+    p->plot_in = 1.6;
+    p->plot_init = 1.0;
     p->resume = false;
     p->bin_path = "grid.bin";
     p->frames_dir = "frames";
@@ -97,12 +94,12 @@ static void parse_args(int argc, char **argv, SimParams *p) {
         } else if (strcmp(argv[i], "-s") == 0) {
             i = need_value(i, argc, "-s");
             p->seed = (unsigned int)parse_int(argv[i], "seed");
-        } else if (strcmp(argv[i], "--rho-in") == 0) {
-            i = need_value(i, argc, "--rho-in");
-            p->rho_in = parse_double(argv[i], "rho_in");
-        } else if (strcmp(argv[i], "--rho-init") == 0) {
-            i = need_value(i, argc, "--rho-init");
-            p->rho_init = parse_double(argv[i], "rho_init");
+        } else if (strcmp(argv[i], "--plot-in") == 0) {
+            i = need_value(i, argc, "--plot-in");
+            p->plot_in = parse_double(argv[i], "plot_in");
+        } else if (strcmp(argv[i], "--plot-init") == 0) {
+            i = need_value(i, argc, "--plot-init");
+            p->plot_init = parse_double(argv[i], "plot_init");
         } else if (strcmp(argv[i], "--resume") == 0) {
             p->resume = true;
         } else if (strcmp(argv[i], "--bin") == 0) {
@@ -148,28 +145,28 @@ int main(int argc, char **argv) {
 
     if (params.resume) {
         if (!grid_load(grid, (uint32_t)params.width, (uint32_t)params.height,
-                       &start_iter, &params.rho_in, params.bin_path)) {
+                       &start_iter, &params.plot_in, params.bin_path)) {
             fprintf(stderr, "Warning: cannot load %s, starting fresh\n", params.bin_path);
-            lattice_init(grid, params.width, params.height, params.rho_init, params.seed);
+            lattice_init(grid, params.width, params.height, params.plot_init, params.seed);
             start_iter = 0;
         }
         place_cylinder(grid, params.width, params.height, params.diameter);
     } else {
-        lattice_init(grid, params.width, params.height, params.rho_init, params.seed);
+        lattice_init(grid, params.width, params.height, params.plot_init, params.seed);
         place_cylinder(grid, params.width, params.height, params.diameter);
     }
 
     printf("LGA simulation started\n");
-    printf("size=%dx%d, iters=%llu, rho_in=%.3f, diameter=%d, seed=%u\n",
+    printf("size=%dx%d, iters=%llu, plot_in=%.3f, diameter=%d, seed=%u\n",
            params.width, params.height, (unsigned long long)params.iters,
-           params.rho_in, params.diameter, params.seed);
+           params.plot_in, params.diameter, params.seed);
 
     uint64_t end_iter = start_iter + params.iters;
 
     for (uint64_t iter = start_iter + 1; iter <= end_iter; iter++) {
         step_collision(grid, params.width, params.height);
         step_streaming(grid, next, params.width, params.height);
-        apply_inlet(next, params.width, params.height, params.rho_in);
+        apply_inlet(next, params.width, params.height, params.plot_in);
         apply_outlet(next, params.width, params.height);
 
         Cell *tmp = grid;
@@ -181,13 +178,13 @@ int main(int argc, char **argv) {
         }
     }
 
-    double rho_avg = compute_avg_density(grid, params.width, params.height);
+    double plot_avg = compute_avg_density(grid, params.width, params.height);
     printf("\nFinal result\n");
     printf("iteration: %llu\n", (unsigned long long)end_iter);
-    printf("rho avg:   %.6f\n", rho_avg);
+    printf("plot avg:   %.6f\n", plot_avg);
 
     grid_save(grid, (uint32_t)params.width, (uint32_t)params.height,
-              end_iter, params.rho_in, params.bin_path);
+              end_iter, params.plot_in, params.bin_path);
 
     free(grid);
     free(next);

@@ -3,7 +3,7 @@
 #include "grid_io.h"
 
 void grid_save(const Cell *grid, uint32_t w, uint32_t h,
-               uint64_t iter, double rho_in, const char *path) {
+               uint64_t iter, double plot_in, const char *path) {
     FILE *f = fopen(path, "wb");
     if (!f) {
         perror("grid_save fopen");
@@ -15,7 +15,7 @@ void grid_save(const Cell *grid, uint32_t w, uint32_t h,
     hdr.width = w;
     hdr.height = h;
     hdr.iteration = iter;
-    hdr.rho_in = rho_in;
+    hdr.plot_in = plot_in;
 
     if (fwrite(&hdr, sizeof(hdr), 1, f) != 1) {
         perror("grid_save header");
@@ -38,7 +38,7 @@ void grid_save(const Cell *grid, uint32_t w, uint32_t h,
 }
 
 int grid_load(Cell *grid, uint32_t w, uint32_t h,
-              uint64_t *iter, double *rho_in, const char *path) {
+              uint64_t *iter, double *plot_in, const char *path) {
     FILE *f = fopen(path, "rb");
     if (!f) {
         return 0;
@@ -76,10 +76,10 @@ int grid_load(Cell *grid, uint32_t w, uint32_t h,
     }
 
     *iter = hdr.iteration;
-    *rho_in = hdr.rho_in;
+    *plot_in = hdr.plot_in;
 
     fclose(f);
-    printf("[grid_io] Resumed from %s (iter %llu, rho_in=%.3f)\n",
-           path, (unsigned long long)*iter, *rho_in);
+    printf("[grid_io] Resumed from %s (iter %llu, plot_in=%.3f)\n",
+           path, (unsigned long long)*iter, *plot_in);
     return 1;
 }

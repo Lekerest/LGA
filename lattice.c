@@ -2,20 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lattice.h"
-
+//смещение для правильеого представления четных и нечетных клеток решетки
 static const int DX_EVEN[6] = { 1, 0, -1, -1, 0, 1 };
 static const int DY_EVEN[6] = { 0, -1, -1, 0, 1, 1 };
 static const int DX_ODD[6]  = { 1, 1, 0, -1, -1, 0 };
 static const int DY_ODD[6]  = { 0, -1, -1, 0, 1, 1 };
-
+//индекс клетки в одномерном масииве
 int cell_index(int x, int y, int w) {
     return y * w + x;
 }
-
+//протвоп направление
 int opposite_dir(int d) {
     return (d + 3) % 6;
 }
-
+//смешение чет/нечет
 void neighbor_offset(int y, int d, int *dx, int *dy) {
     if (y % 2 == 0) {
         *dx = DX_EVEN[d];
@@ -25,27 +25,23 @@ void neighbor_offset(int y, int d, int *dx, int *dy) {
         *dy = DY_ODD[d];
     }
 }
-
+//создание сетки
 Cell *grid_alloc(int w, int h) {
     Cell *grid = (Cell *)calloc((size_t)w * (size_t)h, sizeof(Cell));
-    if (!grid) {
-        fprintf(stderr, "Cannot allocate grid %dx%d\n", w, h);
-        exit(1);
-    }
     return grid;
 }
-
+//очистка решетки
 void grid_clear(Cell *grid, int w, int h) {
     for (int i = 0; i < w * h; i++) {
         grid[i].state = 0;
         grid[i].is_obstacle = false;
     }
 }
-
-void lattice_init(Cell *grid, int w, int h, double rho, unsigned int seed) {
+//заполнение клетки рандом частицами
+void lattice_init(Cell *grid, int w, int h, double plot, unsigned int seed) {
     srand(seed);
 
-    double p = rho / 7.0;
+    double p = plot / 7.0;
     if (p < 0.0) p = 0.0;
     if (p > 1.0) p = 1.0;
 
@@ -61,7 +57,7 @@ void lattice_init(Cell *grid, int w, int h, double rho, unsigned int seed) {
         }
     }
 }
-
+//цилиндр в центре сетки
 void place_cylinder(Cell *grid, int w, int h, int diameter) {
     int cx = w / 2;
     int cy = h / 2;
@@ -84,7 +80,7 @@ void place_cylinder(Cell *grid, int w, int h, int diameter) {
         }
     }
 }
-
+//движение частицц
 void step_streaming(const Cell *src, Cell *dst, int w, int h) {
     for (int i = 0; i < w * h; i++) {
         dst[i].state = 0;
