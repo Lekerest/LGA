@@ -54,16 +54,17 @@ static void test_collision_rules(void)  // проверяем что 2 друн�
     check_int("three-particle collision", out, (1u << 1) | (1u << 3) | (1u << 5));
 }
 
-static void test_grid_io(void) {
-    int w = 8, h = 6;
-    Cell *grid = grid_alloc(w, h);
-    Cell *loaded = grid_alloc(w, h);
+static void test_grid_io(void) // чекаем что сохранение и загрузка карамелек работает
+{ // сохранить состояние решётки в файл -> загрузить его обратно -> восстановить номер итерации -> восстановить rho_in -> восстановить state клеток
+    int w = 8, h = 6; // мини решетка для теста 8 ширина 6 высота
+    Cell *grid = grid_alloc(w, h); // grid_alloc из lattice.c
+    Cell *loaded = grid_alloc(w, h); // grid начальная для сохранения в файл loaded потом вторая для загрузки из файла
 
-    grid[0].state = 7;
-    grid[10].state = 64;
-    grid[12].state = 31;
+    grid[0].state = 7; // 0000111
+    grid[10].state = 64; // 1000000
+    grid[12].state = 31; // 0011111
 
-    grid_save(grid, (uint32_t)w, (uint32_t)h, 123, 1.75, "test_grid.bin");
+    grid_save(grid, (uint32_t)w, (uint32_t)h, 123, 1.75, "test_grid.bin"); // grid_save из grid_io.c
 
     uint64_t iter = 0;
     double plot = 0.0;
