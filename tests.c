@@ -10,7 +10,7 @@
 
 static int failures = 0;
 
-static void check_int(const char *name, int got, int expected) 
+static void check_int(const char *name, int got, int expected)  // имя + фр + ор
 {
     if (got != expected) 
     {
@@ -38,9 +38,9 @@ static void check_true(const char *name, int ok)
 
 static void test_opposite_dir(void) 
 {
-    check_int("opposite 0", opposite_dir(0), 3);
-    check_int("opposite 1", opposite_dir(1), 4);
-    check_int("opposite 2", opposite_dir(2), 5);
+    check_int("opposite 0", opposite_dir(0), 3); // opposite_dir из lattice.c
+    check_int("opposite 1", opposite_dir(1), 4); // (d + 3) % 6
+    check_int("opposite 2", opposite_dir(2), 5); // 0 - вправо, 1 - в вправо, 2 - вверх влево, 3 - вверх влево, 4 - вниз влево, 5 - вниз вправо
     check_int("opposite 3", opposite_dir(3), 0);
 }
 

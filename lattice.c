@@ -12,7 +12,8 @@ int cell_index(int x, int y, int w) {
     return y * w + x;
 }
 //протвоп направление
-int opposite_dir(int d) {
+int opposite_dir(int d) 
+{
     return (d + 3) % 6;
 }
 //смешение чет/нечет
