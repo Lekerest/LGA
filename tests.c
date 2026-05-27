@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <stdio.h> // вывод в текста в консоль
+#include <stdlib.h> // srand free remove
+#include <math.h> // для модуля разницы
 
 #include "cell.h"
 #include "lattice.h"
@@ -10,25 +10,34 @@
 
 static int failures = 0;
 
-static void check_int(const char *name, int got, int expected) {
-    if (got != expected) {
+static void check_int(const char *name, int got, int expected) 
+{
+    if (got != expected) 
+    {
         printf("[FAIL] %s: got %d, expected %d\n", name, got, expected);
         failures++;
-    } else {
+    } 
+    else 
+    {
         printf("[ OK ] %s\n", name);
     }
 }
 
-static void check_true(const char *name, int ok) {
-    if (!ok) {
+static void check_true(const char *name, int ok) 
+{
+    if (!ok) 
+    {
         printf("[FAIL] %s\n", name);
         failures++;
-    } else {
+    } 
+    else 
+    {
         printf("[ OK ] %s\n", name);
     }
 }
 
-static void test_opposite_dir(void) {
+static void test_opposite_dir(void) 
+{
     check_int("opposite 0", opposite_dir(0), 3);
     check_int("opposite 1", opposite_dir(1), 4);
     check_int("opposite 2", opposite_dir(2), 5);
@@ -94,14 +103,16 @@ static void test_avg_density(void) {
     free(grid);
 }
 
-int main(void) {
+int main(void) 
+{
     test_opposite_dir();
     test_collision_rules();
     test_grid_io();
     test_streaming_wall_bounce();
     test_avg_density();
 
-    if (failures == 0) {
+    if (failures == 0) 
+    {
         printf("\nAll tests passed.\n");
         return 0;
     }
