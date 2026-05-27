@@ -5,7 +5,8 @@
 void grid_save(const Cell *grid, uint32_t w, uint32_t h,
                uint64_t iter, double plot_in, const char *path) {
     FILE *f = fopen(path, "wb");
-    if (!f) {
+    if (!f) 
+    {
         perror("grid_save fopen");
         return;
     }
@@ -17,15 +18,18 @@ void grid_save(const Cell *grid, uint32_t w, uint32_t h,
     hdr.iteration = iter;
     hdr.plot_in = plot_in;
 
-    if (fwrite(&hdr, sizeof(hdr), 1, f) != 1) {
+    if (fwrite(&hdr, sizeof(hdr), 1, f) != 1) 
+    {
         perror("grid_save header");
         fclose(f);
         return;
     }
 
-    for (uint32_t i = 0; i < w * h; i++) {
+    for (uint32_t i = 0; i < w * h; i++) 
+    {
         uint8_t state = grid[i].state & STATE_MASK;
-        if (fwrite(&state, sizeof(uint8_t), 1, f) != 1) {
+        if (fwrite(&state, sizeof(uint8_t), 1, f) != 1) 
+        {
             perror("grid_save state");
             fclose(f);
             return;

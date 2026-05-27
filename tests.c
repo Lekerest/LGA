@@ -80,28 +80,30 @@ static void test_grid_io(void) // чекаем что сохранение и з
     remove("test_grid.bin");
 }
 
-static void test_streaming_wall_bounce(void) {
+static void test_streaming_wall_bounce(void) // проверка что частицы не могут покинуть саратов (bounce-back)
+{
     int w = 10, h = 10;
     Cell *grid = grid_alloc(w, h);
     Cell *next = grid_alloc(w, h);
 
-    int id = cell_index(4, 0, w);
-    grid[id].state = (1u << DIR_NE);
-    step_streaming(grid, next, w, h);
+    int id = cell_index(4, 0, w); // cell_index из lattice.c // считаем индекс клетки
+    grid[id].state = (1u << DIR_NE); // ставим частицу у границы с направлением вверх вправо
+    step_streaming(grid, next, w, h); // step_streaming из lattice.c // далем шаг и ожидаем что частица отразится в обратном направлении
 
-    check_true("top wall bounce", (next[id].state & (1u << DIR_SW)) != 0);
+    check_true("top wall bounce", (next[id].state & (1u << DIR_SW)) != 0); // чекаем что после шага та же клетка осталась и поменяла нправление на обратное
 
     free(grid);
     free(next);
 }
 
-static void test_avg_density(void) {
+static void test_avg_density(void) 
+{
     int w = 4, h = 4;
     Cell *grid = grid_alloc(w, h);
-    grid[0].state = 3;
-    grid[1].state = 1;
-    double plot = compute_avg_density(grid, w, h);
-    check_true("avg density", fabs(plot - 3.0 / 16.0) < 1e-9);
+    grid[0].state = 3; // 0000011
+    grid[1].state = 1; // 0000001
+    double rho = compute_avg_density(grid, w, h); // compute_avg_density из render.c
+    check_true("avg density", fabs(rho - 3.0 / 16.0) < 1e-9); // там считаем количество частиц / на все клетки
     free(grid);
 }
 
