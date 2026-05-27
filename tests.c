@@ -67,13 +67,13 @@ static void test_grid_io(void) // чекаем что сохранение и з
     grid_save(grid, (uint32_t)w, (uint32_t)h, 123, 1.75, "test_grid.bin"); // grid_save из grid_io.c
 
     uint64_t iter = 0;
-    double plot = 0.0;
-    int ok = grid_load(loaded, (uint32_t)w, (uint32_t)h, &iter, &plot, "test_grid.bin");
+    double rho_loaded = 0.0;
+    int ok = grid_load(loaded, (uint32_t)w, (uint32_t)h, &iter, &rho_loaded, "test_grid.bin"); // grid_load из grid_io.c
 
     check_true("grid_load ok", ok == 1);
     check_true("grid_load iter", iter == 123);
-    check_true("grid_load plot", fabs(plot - 1.75) < 1e-9);
-    check_int("grid_load state", loaded[12].state, 31);
+    check_true("grid_load rho_loaded", fabs(rho_loaded - 1.75) < 1e-9); // из за формата хранения числа в double может быть микро разница
+    check_int("grid_load state", loaded[12].state, 31);                 //  поэтому сравниваем что < 1e-9 эта разница и тогда типа равно
 
     free(grid);
     free(loaded);
