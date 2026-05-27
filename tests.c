@@ -36,20 +36,21 @@ static void check_true(const char *name, int ok)
     }
 }
 
-static void test_opposite_dir(void) 
+static void test_opposite_dir(void) // проверяем что разворот поворот нормис
 {
     check_int("opposite 0", opposite_dir(0), 3); // opposite_dir из lattice.c
     check_int("opposite 1", opposite_dir(1), 4); // (d + 3) % 6
-    check_int("opposite 2", opposite_dir(2), 5); // 0 - вправо, 1 - в вправо, 2 - вверх влево, 3 - вверх влево, 4 - вниз влево, 5 - вниз вправо
+    check_int("opposite 2", opposite_dir(2), 5); // 0 - вправо, 1 - вверх вправо, 2 - вверх влево, 3 - влево, 4 - вниз влево, 5 - вниз вправо
     check_int("opposite 3", opposite_dir(3), 0);
 }
 
-static void test_collision_rules(void) {
-    srand(1);
-    uint8_t out = apply_collision((1u << 0) | (1u << 3));
+static void test_collision_rules(void)  // проверяем что 2 друна находят норм решение конфликта
+{
+    srand(1); // ставим 0 и 3 в 1 клетку они такие типа ватафак куда кому пройти и apply_collision из collision.c решает это
+    uint8_t out = apply_collision((1u << 0) | (1u << 3)); // если 0 и 3 то может быть как 1 4 так и 2 5 поэтому проверяем что друны остались вдвоем а не потерялись
     check_true("head-on collision keeps two particles", cell_density(&(Cell){ .state = out }) == 2.0);
 
-    out = apply_collision((1u << 0) | (1u << 2) | (1u << 4));
+    out = apply_collision((1u << 0) | (1u << 2) | (1u << 4)); // тут друнов уже 3 и по правилам 3-particle collision. 0 2 4 переходит в 1 3 5 и наоборот
     check_int("three-particle collision", out, (1u << 1) | (1u << 3) | (1u << 5));
 }
 
