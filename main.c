@@ -51,11 +51,12 @@ static int parse_int(const char *s, const char *name)
     return (int)v;
 }
 
-static double parse_double(const char *s, const char *name) {
+static double parse_double(const char *s, const char *name) 
+{
     char *end = NULL;
     double v = strtod(s, &end);
-    if (!end || *end != '\0') {
-        fprintf(stderr, "Bad double for %s: %s\n", name, s);
+    if (!end || *end != '\0') 
+    {
         exit(1);
     }
     return v;
@@ -135,7 +136,8 @@ static void parse_args(int argc, char **argv, SimParams *p) {
     }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) 
+{
     SimParams params;
     parse_args(argc, argv, &params);
 
