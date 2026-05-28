@@ -21,17 +21,17 @@ typedef struct { //одна клетка решетки
 } Cell;
 
 typedef struct { //параметры симуляции
-    int width;
-    int height;
-    uint64_t iters;
-    int viz_interval;
-    int diameter;
-    unsigned int seed;
-    double plot_in;
-    double plot_init;
-    bool resume;
-    const char *bin_path;
-    const char *frames_dir;
+    int width;          // ширина решётки (флаг -w, по умолч. 256)
+    int height;         // высота решётки (флаг -h, по умолч. 160)
+    uint64_t iters;     // число итераций (флаг -n, по умолч. 1000)
+    int viz_interval;   // интервал отрисовки в итерациях (флаг -v, по умолч. 100)
+    int diameter;       // диаметр цилиндра в клетках (флаг -d, по умолч. 30)
+    unsigned int seed;  // зерно для srand() (флаг -s, по умолч. time(NULL))
+    double plot_in;     // плотность входного потока, p = plot_in/3 (флаг --plot-in, по умолч. 1.6)
+    double plot_init;   // начальная плотность решётки, p = plot_init/7 (флаг --plot-init, по умолч. 1.0)
+    bool resume;        // продолжить с сохранённого состояния (флаг --resume)
+    const char *bin_path;    // путь к файлу сохранения (флаг --bin, по умолч. "grid.bin")
+    const char *frames_dir;  // папка для PPM-кадров (фла
 } SimParams;
 
 #endif

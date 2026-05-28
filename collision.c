@@ -22,16 +22,13 @@ uint8_t apply_collision(uint8_t state) {
     //2 частицы друн в друна то рандом под 90 градусами
     if (!rest && moving_count(state) == 2) {
         if (moving == ((1u << 0) | (1u << 3))) {
-            return (rand() & 1) ? (uint8_t)((1u << 1) | (1u << 4))
-                                : (uint8_t)((1u << 2) | (1u << 5));
+            return (rand() & 1) ? (uint8_t)((1u << 1) | (1u << 4)) : (uint8_t)((1u << 2) | (1u << 5));
         }
         if (moving == ((1u << 1) | (1u << 4))) {
-            return (rand() & 1) ? (uint8_t)((1u << 0) | (1u << 3))
-                                : (uint8_t)((1u << 2) | (1u << 5));
+            return (rand() & 1) ? (uint8_t)((1u << 0) | (1u << 3)) : (uint8_t)((1u << 2) | (1u << 5));
         }
         if (moving == ((1u << 2) | (1u << 5))) {
-            return (rand() & 1) ? (uint8_t)((1u << 0) | (1u << 3))
-                                : (uint8_t)((1u << 1) | (1u << 4));
+            return (rand() & 1) ? (uint8_t)((1u << 0) | (1u << 3)) : (uint8_t)((1u << 1) | (1u << 4));
         }
     }
 
@@ -45,14 +42,10 @@ uint8_t apply_collision(uint8_t state) {
 
     //2 друн в друна и покой то 2 варианты звезды
     if (rest && moving_count(state) == 2) {
-        int opposite_pair =
-            moving == ((1u << 0) | (1u << 3)) ||
-            moving == ((1u << 1) | (1u << 4)) ||
-            moving == ((1u << 2) | (1u << 5));
+        int opposite_pair = moving == ((1u << 0) | (1u << 3)) || moving == ((1u << 1) | (1u << 4)) || moving == ((1u << 2) | (1u << 5));
 
         if (opposite_pair) {
-            return (rand() & 1) ? (uint8_t)((1u << 0) | (1u << 2) | (1u << 4))
-                                : (uint8_t)((1u << 1) | (1u << 3) | (1u << 5));
+            return (rand() & 1) ? (uint8_t)((1u << 0) | (1u << 2) | (1u << 4)) : (uint8_t)((1u << 1) | (1u << 3) | (1u << 5));
         }
     }
 
