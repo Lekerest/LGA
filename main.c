@@ -30,29 +30,33 @@ static void print_help(const char *prog) {
     printf("  --help             show help\n");
 }
 
-static int need_value(int i, int argc, const char *opt) {
-    if (i + 1 >= argc) {
+static int need_value(int i, int argc, const char *opt) 
+{
+    if (i + 1 >= argc) 
+    {
         fprintf(stderr, "Option %s requires value\n", opt);
         exit(1);
     }
     return i + 1;
 }
 
-static int parse_int(const char *s, const char *name) {
+static int parse_int(const char *s, const char *name) 
+{
     char *end = NULL;
     long v = strtol(s, &end, 10);
-    if (!end || *end != '\0') {
-        fprintf(stderr, "Bad integer for %s: %s\n", name, s);
+    if (!end || *end != '\0') 
+    {
         exit(1);
     }
     return (int)v;
 }
 
-static double parse_double(const char *s, const char *name) {
+static double parse_double(const char *s, const char *name) 
+{
     char *end = NULL;
     double v = strtod(s, &end);
-    if (!end || *end != '\0') {
-        fprintf(stderr, "Bad double for %s: %s\n", name, s);
+    if (!end || *end != '\0') 
+    {
         exit(1);
     }
     return v;
@@ -132,7 +136,8 @@ static void parse_args(int argc, char **argv, SimParams *p) {
     }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) 
+{
     SimParams params;
     parse_args(argc, argv, &params);
 

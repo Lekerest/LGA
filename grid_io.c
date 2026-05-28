@@ -1,11 +1,12 @@
-#include <stdio.h>
+#include <stdio.h> // файлы
 #include <stdlib.h>
 #include "grid_io.h"
 
 void grid_save(const Cell *grid, uint32_t w, uint32_t h,
                uint64_t iter, double plot_in, const char *path) {
     FILE *f = fopen(path, "wb");
-    if (!f) {
+    if (!f) 
+    {
         perror("grid_save fopen");
         return;
     }
@@ -17,15 +18,18 @@ void grid_save(const Cell *grid, uint32_t w, uint32_t h,
     hdr.iteration = iter;
     hdr.plot_in = plot_in;
 
-    if (fwrite(&hdr, sizeof(hdr), 1, f) != 1) {
+    if (fwrite(&hdr, sizeof(hdr), 1, f) != 1) 
+    {
         perror("grid_save header");
         fclose(f);
         return;
     }
 
-    for (uint32_t i = 0; i < w * h; i++) {
+    for (uint32_t i = 0; i < w * h; i++) 
+    {
         uint8_t state = grid[i].state & STATE_MASK;
-        if (fwrite(&state, sizeof(uint8_t), 1, f) != 1) {
+        if (fwrite(&state, sizeof(uint8_t), 1, f) != 1) 
+        {
             perror("grid_save state");
             fclose(f);
             return;
@@ -40,12 +44,14 @@ void grid_save(const Cell *grid, uint32_t w, uint32_t h,
 int grid_load(Cell *grid, uint32_t w, uint32_t h,
               uint64_t *iter, double *plot_in, const char *path) {
     FILE *f = fopen(path, "rb");
-    if (!f) {
+    if (!f) 
+    {
         return 0;
     }
 
     GridHeader hdr;
-    if (fread(&hdr, sizeof(hdr), 1, f) != 1) {
+    if (fread(&hdr, sizeof(hdr), 1, f) != 1) 
+    {
         fprintf(stderr, "[grid_io] Cannot read header from %s\n", path);
         fclose(f);
         return 0;
@@ -57,16 +63,19 @@ int grid_load(Cell *grid, uint32_t w, uint32_t h,
         return 0;
     }
 
-    if (hdr.width != w || hdr.height != h) {
+    if (hdr.width != w || hdr.height != h) 
+    {
         fprintf(stderr, "[grid_io] Size mismatch: file %ux%u, expected %ux%u\n",
                 hdr.width, hdr.height, w, h);
         fclose(f);
         return 0;
     }
 
-    for (uint32_t i = 0; i < w * h; i++) {
+    for (uint32_t i = 0; i < w * h; i++) 
+    {
         uint8_t state = 0;
-        if (fread(&state, sizeof(uint8_t), 1, f) != 1) {
+        if (fread(&state, sizeof(uint8_t), 1, f) != 1) 
+        {
             fprintf(stderr, "[grid_io] Cannot read grid data from %s\n", path);
             fclose(f);
             return 0;
