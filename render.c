@@ -10,10 +10,12 @@
 #include "render.h"
 #include "lattice.h"
 
-static int popcount7(uint8_t x) {
+static int popcount7(uint8_t x) 
+{
     int c = 0;
     x &= STATE_MASK;
-    while (x) {
+    while (x) 
+    {
         c += x & 1u;
         x >>= 1;
     }
@@ -51,12 +53,15 @@ void density_to_rgb(double plot, uint8_t *r, uint8_t *g, uint8_t *b) {
     if (t < 0.0) t = 0.0;
     if (t > 1.0) t = 1.0;
 
-    if (t < 0.5) {
+    if (t < 0.5) 
+    {
         double s = t * 2.0;
         *r = (uint8_t)(0.0 + s * 30.0);
         *g = (uint8_t)(50.0 + s * 150.0);
         *b = (uint8_t)(200.0 - s * 150.0);
-    } else {
+    } 
+    else 
+    {
         double s = (t - 0.5) * 2.0;
         *r = (uint8_t)(30.0 + s * 190.0);
         *g = (uint8_t)(200.0 - s * 170.0);

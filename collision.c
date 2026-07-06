@@ -1,11 +1,13 @@
 #include <stdlib.h>
 #include "collision.h"
 //проверка есть ли частица в направлении b
-static int has_bit(uint8_t s, int b) {
+static int has_bit(uint8_t s, int b) 
+{
     return (s & (1u << b)) != 0;
 }
 //сколько движ частиц в клетке
-static int moving_count(uint8_t s) {
+static int moving_count(uint8_t s) 
+{
     int c = 0;
     for (int d = 0; d < 6; d++) {
         if (has_bit(s, d)) c++;

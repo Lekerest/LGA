@@ -98,13 +98,16 @@ void place_cylinder(Cell *grid, int w, int h, int diameter) {
 }
 //движение частицц
 void step_streaming(const Cell *src, Cell *dst, int w, int h) {
-    for (int i = 0; i < w * h; i++) {
+    for (int i = 0; i < w * h; i++) 
+    {
         dst[i].state = 0;
         dst[i].is_obstacle = src[i].is_obstacle;
     }
 
-    for (int y = 0; y < h; y++) {
-        for (int x = 0; x < w; x++) {
+    for (int y = 0; y < h; y++) 
+    {
+        for (int x = 0; x < w; x++) 
+        {
             int id = cell_index(x, y, w);
             uint8_t state = src[id].state & STATE_MASK;
 
